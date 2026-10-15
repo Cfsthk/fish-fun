@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071f31"><meta name="description" content="A gently animated classroom aquarium for morning reading.">
+  <title>Morning Reef · 晨讀珊瑚海</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#aquarium" data-view="aquarium"><canvas id="brandFish" width="72" height="72" aria-hidden="true"></canvas><span><strong id="brandName">Morning Reef</strong><small id="brandSub">A little ocean for reading time</small></span></a>
+    <nav class="navigation" aria-label="Main navigation">
+      <button type="button" data-view="aquarium" class="nav-link active" id="navAquarium">Aquarium</button>
+      <button type="button" data-view="guide" class="nav-link" id="navGuide">Field guide <span id="guideCount">0 / 24</span></button>
+      <button type="button" data-view="history" class="nav-link" id="navHistory">Sessions</button>
+    </nav>
+    <div class="header-tools"><button type="button" class="class-button" data-action="classes" id="classButton">Class A <span aria-hidden="true">⌄</span></button><span class="header-divider"></span><button type="button" class="text-button language" data-action="language" id="languageButton">繁體中文</button><button type="button" class="icon-button" data-action="fullscreen" id="fullButton" aria-label="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button><button type="button" class="icon-button" data-action="settings" id="settingsButton" aria-label="Teacher settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 17h16"/><path d="M8 4v6M16 14v6"/></svg></button></div>
+  </header>
+  <main>
+    <section class="aquarium-view" id="aquariumView" aria-label="Animated classroom aquarium">
+      <canvas id="reefCanvas" role="img" aria-label="A pixel-art ocean with swimming sea creatures, moving sunlight and waves"></canvas>
+      <div class="scene-shade"></div>
+      <div class="scene-top"><div class="scene-heading"><div class="eyebrow" id="sceneEyebrow">A NEW DAY AT THE REEF</div><h1 id="sceneTitle" aria-live="polite">Ready for reading</h1><p id="sceneSub">Soft voices bring the reef to life.</p><div class="resident-count" id="residentCount" hidden></div></div><div class="clock-block"><span class="eyebrow" id="timerLabel">READING TIME</span><strong id="timer">30:00</strong><span id="sessionClass">Class A</span></div></div>
+      <div id="waterNotice" class="water-notice" hidden><span id="waterNoticeLabel"></span><strong id="waterNoticeCount"></strong></div>
+      <div class="preview-note" id="previewNote"><span class="tiny-dot"></span><span id="previewText">Preview aquarium</span><span class="preview-description" id="previewDescription">Start a session to discover creatures for your class.</span></div>
+      <div class="visitor-notice" id="visitorNotice" role="status" hidden><canvas id="visitorIcon" width="112" height="112" aria-hidden="true"></canvas><div><small id="visitorType"></small><strong id="visitorName"></strong><span id="visitorTier"></span></div></div>
+      <div class="demo-panel" id="demoPanel" hidden><div class="eyebrow" id="demoLabel"></div><label for="demoVolume" id="demoVolumeLabel"></label><input id="demoVolume" type="range" min="0" max="100" value="35"><div class="range-ends"><span id="quietLabel"></span><span id="loudLabel"></span></div><p id="demoHint"></p></div>
+      <div class="pause-overlay" id="pauseOverlay" hidden><div class="pause-mark" aria-hidden="true"><i></i><i></i></div><h2 id="pausedTitle"></h2><p id="pausedSub"></p><button type="button" class="primary-button" data-action="resume" id="overlayResume"></button></div>
+      <div class="loading" id="loading">Preparing your reef…</div>
+    </section>
+    <section class="content-view" id="guideView" hidden><div class="view-heading"><div><div class="eyebrow" id="guideEyebrow"></div><h1 id="guideTitle"></h1><p id="guideSub"></p></div><div class="collection-total"><strong id="collectionTotal">0<span> / 24</span></strong><small id="collectionLabel"></small></div></div><div class="guide-toolbar"><div class="filter-tabs" id="guideFilters"></div><span class="guide-key"><i></i><span id="guideHint"></span></span></div><div class="species-grid" id="speciesGrid"></div></section>
+    <section class="content-view" id="historyView" hidden><div class="view-heading"><div><div class="eyebrow" id="historyEyebrow"></div><h1 id="historyTitle"></h1><p id="historySub"></p></div></div><div id="sessionList"></div></section>
+  </main>
+  <footer class="reading-dock" id="readingDock"><div class="volume-section"><div class="dock-label"><span id="volumeLabel">CLASSROOM VOLUME</span><span class="volume-number" id="volumeNumber">—</span></div><div class="volume-track"><div id="volumeFill"></div><i id="thresholdMarker" hidden></i></div><div class="volume-caption"><span class="connection-dot" id="connectionDot"></span><span id="micStatus">Microphone off</span></div></div><div class="arrival-section"><div class="dock-label"><span id="arrivalLabel">Next visitor</span><span id="arrivalTime">45–60 s</span></div><div class="arrival-track" role="progressbar" aria-label="Quiet reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="arrivalProgress"><div id="arrivalFill"></div></div><span class="arrival-detail" id="arrivalDetail"></span></div><div class="session-actions" id="sessionActions"></div></footer>
+  <dialog id="modal" class="modal"><div id="modalContent"></div></dialog>
+  <div class="toast" id="toast" role="status" hidden></div><div class="storage-warning" id="storageWarning" role="alert" hidden></div>
+  <input type="file" id="backupFile" accept="application/json,.json" hidden>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>
