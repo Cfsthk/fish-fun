@@ -51,22 +51,24 @@ test('integration does not change earnings when the same interval is split into 
 });
 
 test('a long session with forty legendary residents reaches 150 and never exceeds it or auto-ends', () => {
-  const s = new ReefSession({ capacity: 40, rng: () => 0 });
+  const s = new ReefSession({ capacity: 40, arrivalRate: 3, rng: () => 0 });
   for (let i = 0; i < 40; i++) s.admit(BY_ID['whale-shark']);
   s.tick(7200, 20); assert.equal(s.coins, COIN_CAP); assert.equal(s.report().coins, 150);
   assert.equal(s.status, 'running'); s.tick(60, 100); assert.equal(s.coins, 150);
   s.pause(); s.tick(60, 20); s.end(); assert.equal(s.report().coins, 150);
 });
 
-test('30-minute quiet and occasional-noise sessions average 70–100 tokens across seeded classrooms', () => {
+test('30-minute quiet and occasional-noise sessions average 70–100 tokens at 1×, 2× and 3×', () => {
+ for (const arrivalRate of [1, 2, 3]) {
   for (const occasionalNoise of [false, true]) {
     let total = 0;
     for (let seed = 1; seed <= 200; seed++) {
-      const s = new ReefSession({ rng: seeded(seed) });
+      const s = new ReefSession({ arrivalRate, rng: seeded(seed) });
       for (let second = 0; second < 1800; second++) s.tick(1, occasionalNoise && second % 300 >= 297 ? 75 : 20);
       const earned = s.report().coins; assert.ok(earned >= 0 && earned <= 150); total += earned;
       assert.equal(s.status, 'running');
     }
-    const mean = total / 200; assert.ok(mean >= 70 && mean <= 100, `mean ${mean}, occasional noise: ${occasionalNoise}`);
+    const mean = total / 200; assert.ok(mean >= 70 && mean <= 100, `mean ${mean}, frequency ${arrivalRate}, occasional noise: ${occasionalNoise}`);
   }
+ }
 });

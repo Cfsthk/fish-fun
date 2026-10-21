@@ -18,6 +18,20 @@ test('all fifty species can be restored from a session report',()=>{
  const restored=validateStore(JSON.parse(JSON.stringify(data)));assert.equal(activeDiscoveries(restored.classes[0]).length,50);assert.equal(restored.classes[0].sessions[0].visits.length,50);
 });
 test('an explicit English choice persists in V2',()=>{const data=freshStore();data.lang='en';assert.equal(validateStore(data).lang,'en');});
+test('arrival frequency defaults to 1× for new stores and old saved settings',()=>{
+ const data=freshStore();assert.equal(data.settings.arrivalRate,1);delete data.settings.arrivalRate;
+ assert.equal(validateStore(data).settings.arrivalRate,1);
+});
+test('fractional arrival frequency persists through a store round trip',()=>{
+ const data=freshStore();data.settings.arrivalRate=2.5;
+ const restored=validateStore(JSON.parse(JSON.stringify(data)));assert.equal(restored.settings.arrivalRate,2.5);
+ assert.equal(new ReefSession({arrivalRate:restored.settings.arrivalRate}).arrivalRate,2.5);
+});
+test('restored arrival frequency stays finite, within range and at a supported slider step',()=>{
+ for(const [value,expected] of [[0,1],[4,3],[2.36,2.4],[Infinity,1],[NaN,1],['3',1],[null,1]]){
+  const data=freshStore();data.settings.arrivalRate=value;assert.equal(validateStore(data).settings.arrivalRate,expected);
+ }
+});
 test('partial session snapshots update the same report rather than duplicating it',()=>{
  const data=freshStore(),s=new ReefSession({rng:()=>0});addReport(data,data.activeId,s.report());s.admit(BY_ID.clownfish);addReport(data,data.activeId,s.report());assert.equal(data.classes[0].sessions.length,1);assert.equal(data.classes[0].sessions[0].visits[0].count,2);
 });

@@ -1,9 +1,9 @@
 import { BY_ID, SPECIES } from './species.mjs';
-import { COIN_CAP } from './engine.mjs';
+import { COIN_CAP, normalizeArrivalRate } from './engine.mjs';
 const KEY = 'morning-reef-v2';
 const OLD_KEY = 'morning-reef-v1';
 export const HOUSES = [{key:'f',zh:'信',en:'F'},{key:'h',zh:'望',en:'H'},{key:'l',zh:'愛',en:'L'},{key:'w',zh:'智',en:'W'}];
-export const DEFAULT_SETTINGS = {capacity:20,margin:8,threshold:65,reducedMotion:false};
+export const DEFAULT_SETTINGS = {capacity:20,margin:8,threshold:65,arrivalRate:1,reducedMotion:false};
 export const newClass = (name='Class A') => ({id:crypto.randomUUID(),name,unlocked:[],sessions:[],calibration:null});
 export function presetClasses() {
   return Array.from({length:6},(_,i)=>HOUSES.map(h=>({id:'p'+(i+1)+'-'+h.key,name:'P.'+(i+1)+' '+h.zh,grade:i+1,house:h.key,unlocked:[],sessions:[],calibration:null}))).flat();
@@ -55,7 +55,7 @@ export function validateStore(input) {
     }else{classes.push(c);if(c.id===input.activeId)activeId=c.id;}
   }
   const s=input.settings||{};
-  return {version:2,lang:input.version===1?'zh':input.lang==='en'?'en':'zh',classes,activeId,settings:{capacity:finite(s.capacity,10,40)?Math.round(s.capacity):20,margin:finite(s.margin,2,20)?Math.round(s.margin):8,threshold:finite(s.threshold,5,98)?Math.round(s.threshold):65,reducedMotion:s.reducedMotion===true}};
+  return {version:2,lang:input.version===1?'zh':input.lang==='en'?'en':'zh',classes,activeId,settings:{capacity:finite(s.capacity,10,40)?Math.round(s.capacity):20,margin:finite(s.margin,2,20)?Math.round(s.margin):8,threshold:finite(s.threshold,5,98)?Math.round(s.threshold):65,arrivalRate:normalizeArrivalRate(s.arrivalRate),reducedMotion:s.reducedMotion===true}};
 }
 export function readStore() {
   try{const raw=localStorage.getItem(KEY)??localStorage.getItem(OLD_KEY);return {data:raw?validateStore(JSON.parse(raw)):freshStore(),error:null};}

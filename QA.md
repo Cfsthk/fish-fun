@@ -1,14 +1,32 @@
-# Verification · V2.7 · 15 October 2026
+# Verification · V2.8 · 21 October 2026
 
 ## Automated tests
 
-**50 native Node tests pass** with `npm test`; no package installation is needed.
+**58 native Node tests pass** with `npm test`; no package installation is needed.
 
-Nine new token tests cover count and rarity sensitivity, duplicate residents, diminishing returns, preserved fractional earnings, pause/end freezing, reduced income after departures, passing visitors, frame-size independence, invalid elapsed time, restart reset, the 150-token hard cap in long sessions, average rewards across 400 seeded 30-minute sessions, class isolation, backward-compatible stored reports and invalid stored amounts.
+Eight arrival-frequency regressions cover fractional multipliers, actual session time, both directions of live adjustment without losing quiet credit, pause, unchanged one-second losses and ten-second recovery, capacity, manual ending, invalid rates, old saved settings and persistence. The existing token-balance test now covers 1,200 seeded 30-minute sessions at 1×, 2× and 3×.
+
+Token tests also cover count and rarity sensitivity, duplicate residents, diminishing returns, preserved fractional earnings, pause/end freezing, reduced income after departures, passing visitors, frame-size independence, invalid elapsed time, restart reset, the 150-token hard cap in long sessions, class isolation, backward-compatible stored reports and invalid stored amounts.
+
+### Arrival frequency and token balance · V2.8
+
+The settings slider ranges from 1× to 3× in 0.1× steps and defaults to 1× for new and old settings. Only settled quiet arrival credit is multiplied: 1× keeps the 45–60-second interval, 2× takes 22.5–30 seconds, and 3× takes 15–20 seconds. Changing the value keeps already-earned credit and applies to the current session; time, loss/recovery timers, movement and rarity odds are unaffected.
+
+The previous token curve averaged about 104 tokens at 3×. The revised curve, `3.4 × (1 − exp(−P / 4.5))` tokens per active minute with the same rarity weights, keeps the original mean target across the new speed range. No extra penalty depends on the slider: income still depends on current resident count and rarity. The session hard cap remains 150.
+
+Ran the actual engine with 200 seeds per row, 1,800 active seconds, capacity 20 and threshold 65. Quiet volume is 20; occasional noise is volume 75 during the last three seconds of each five-minute interval. Each row below reports integer tokens.
+
+| Frequency | Quiet mean (range) | Occasional-noise mean (range) |
+| --- | ---: | ---: |
+| 1× | 92.360 (90–96) | 71.375 (66–77) |
+| 2× | 96.900 (96–99) | 95.160 (93–98) |
+| 3× | 98.430 (98–100) | 98.045 (97–99) |
+
+The sections below retain the evidence and measurements for earlier revisions.
 
 ### Token balance · V2.7
 
-The shipped formula is `3.6 × (1 − exp(−P / 5))` tokens per active minute, where `P` sums current resident rarity weights `[1, 1.4, 2, 3, 4]`. Each 0.1-second integration step accumulates fractional rewards, the counter/report floors the total, and the session clamps it to 150. Only residents contribute; no tokens are deducted when fish leave. Pause/end and microphone interruptions stop the existing engine clock and therefore earnings. The session has no automatic time limit.
+The V2.7 formula was `3.6 × (1 − exp(−P / 5))` tokens per active minute, where `P` sums current resident rarity weights `[1, 1.4, 2, 3, 4]`. Each 0.1-second integration step accumulates fractional rewards, the counter/report floors the total, and the session clamps it to 150. Only residents contribute; no tokens are deducted when fish leave. Pause/end and microphone interruptions stop the existing engine clock and therefore earnings. The session has no automatic time limit.
 
 Ran 1,000 independent 1,800-second sessions per profile using the actual engine, capacity 20, threshold 65, quiet volume 20 and the LCG seed sequence 1–1,000 (`seed = (1664525 × seed + 1013904223) >>> 0`). All reported values below are integer tokens. Arrivals, rarity, recovery and capacity replacement remain enabled.
 
@@ -38,6 +56,13 @@ New and revised coverage:
 ## Browser checks
 
 Verified in isolated Chromium profiles with synthetic audio; no classroom audio was used.
+
+### Frequency slider · V2.8
+
+- At 390 × 844, Chinese settings show the current multiplier, native 1–3 range with 0.1 step, and quiet-wait help. Moving to 3× updates the engine and saved settings immediately while preserving the exact paused quiet credit, elapsed time and token amount. The settings dialog has no horizontal overflow.
+- At 2.5×, changing to English retains the value and shows “Creature arrival frequency” with an 18–24-second quiet wait. Changing class retains 2.5× and starts its new session with one common fish. Reload retains English and 2.5×, still returning to the year chooser with zero audio contexts before class selection.
+- In the actual source session, changing to 3× produced the next visitor after 16.799 active seconds, matching the 16.765-second remaining wait within the integration step. Teacher pause froze elapsed time, arrival credit, token amount and full canvas pixels. The source service worker activated `morning-reef-12`.
+- The rebuilt standalone was opened directly at 320 × 568 under Offline network emulation. Its 3× slider saved correctly without horizontal overflow. In about 38 active seconds, it logged three total visitors, consistent with two new arrivals at 3× instead of the 45-second minimum wait at 1×. Ending still produced the visitor/token report. Initial loading and operation made zero HTTP(S) resource requests; source and standalone reported no console errors.
 
 ### Production integration and tokens · V2.7
 
@@ -104,7 +129,7 @@ Previous immersive layout, fifty-species guide, initial common fish, shared pixe
 
 The rebuilt file was opened directly through `file:///` under DevTools Offline network emulation. It made zero external HTTP(S) resource requests. Settings had no duration input; a manually ended session showed only close, guide and restart. Stored settings contained capacity, threshold, calibration margin and motion preference.
 
-The source service worker uses `morning-reef-11`, with twenty-one shell resources including both new atlases. This branding update changes the application title and manifest name to 魚樂無窮; the rebuilt standalone includes the new name, year-then-class selection before microphone connection, the updated assets and tail motion, and session tokens. The separate comparison page is a localhost preview, outside the classroom session and the standalone bundle.
+The source service worker uses `morning-reef-12`, with twenty-one shell resources including both new atlases. The rebuilt standalone includes the 魚樂無窮 name, year-then-class selection before microphone connection, updated assets and tail motion, session tokens and the 1–3× arrival-frequency control. The separate comparison page is a localhost preview, outside the classroom session and the standalone bundle.
 
 ## Classroom trial
 

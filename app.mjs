@@ -1,5 +1,5 @@
 import { SPECIES, BY_ID, TIERS } from './species.mjs';
-import { ReefSession } from './engine.mjs';
+import { ReefSession, normalizeArrivalRate } from './engine.mjs';
 import { ReefScene } from './scene.mjs';
 import { ClassroomMicrophone } from './microphone.mjs';
 import { readStore, writeStore, addReport, classLabel, HOUSES, activeDiscoveries } from './store.mjs';
@@ -12,6 +12,7 @@ const currentClass=()=>data.classes.find(c=>c.id===data.activeId)||data.classes[
 const name=s=>s[data.lang];
 const label=c=>classLabel(c,data.lang);
 const tier=i=>TIERS[i][data.lang];
+const arrivalHelp=rate=>t('arrivalHelp').replace('{min}',Math.round(45/rate*10)/10).replace('{max}',Math.round(60/rate*10)/10);
 const text=(id,value)=>{const el=$(id);if(el&&el.textContent!==String(value))el.textContent=String(value);};
 const btn=(action,key,kind='secondary',attrs='')=>`<button type="button" class="${kind}" data-action="${action}" ${attrs}>${esc(t(key))}</button>`;
 const scene=new ReefScene($('reefCanvas')),mic=new ClassroomMicrophone();
@@ -36,7 +37,7 @@ function updateStatus(){
  scene.reducedMotion=data.settings.reducedMotion||matchMedia('(prefers-reduced-motion: reduce)').matches;
  scene.state(session,level);
 }
-function makeSession(){sessionClassId=currentClass().id;session=new ReefSession({capacity:data.settings.capacity,threshold:currentClass().calibration?.threshold??data.settings.threshold,known:currentClass().unlocked});session.pause();scene.clear();events(session.drain());scene.draw(0,true);updateStatus();}
+function makeSession(){sessionClassId=currentClass().id;session=new ReefSession({capacity:data.settings.capacity,threshold:currentClass().calibration?.threshold??data.settings.threshold,arrivalRate:data.settings.arrivalRate,known:currentClass().unlocked});session.pause();scene.clear();events(session.drain());scene.draw(0,true);updateStatus();}
 function freeze(){session?.pause();mic.pause();scene.freeze(true);level=0;updateStatus();}
 async function connect(){
  if(mic.stream&&!mic.lost)return;
@@ -90,6 +91,7 @@ function renderSettings(message=''){
  <div class="settings-block"><div class="setting-row"><span>${esc(t('microphone'))}</span><span class="connection ${micIssue?'error':''}"><i></i><span id="microphoneState"></span></span></div><p class="status-line error" id="microphoneDetail" hidden></p>
  <label class="field-label" for="thresholdInput">${esc(t('threshold'))}</label><input id="thresholdInput" type="range" min="5" max="98" step="1" value="${threshold}"><div class="range-ends"><span>${esc(t('stricter'))}</span><span>${esc(t('looser'))}</span></div>
  <div class="button-row">${btn('calibrate','calibrate','secondary',calibration?'disabled':'')}${btn('retry','retry','quiet')}</div><p class="help">${esc(t('calibrationHelp'))}</p><div class="calibration-progress" id="calibrationProgress" ${calibration?'':'hidden'}><div id="calibrationFill"></div></div><p id="calibrationStatus" class="status-line ${message?'success':''}">${esc(message)}</p></div>
+ <div class="settings-block"><label class="field-label frequency-label" for="arrivalRateInput">${esc(t('arrivalRate'))}<output id="arrivalRateValue" for="arrivalRateInput">${s.arrivalRate}×</output></label><input id="arrivalRateInput" type="range" min="1" max="3" step="0.1" value="${s.arrivalRate}" aria-valuetext="${s.arrivalRate}×" aria-describedby="arrivalRateHelp"><div class="range-ends"><span>1×</span><span>3×</span></div><p class="help" id="arrivalRateHelp">${esc(arrivalHelp(s.arrivalRate))}</p></div>
  <div class="settings-block"><div class="field"><label for="capacityInput">${esc(t('capacity'))}</label><input type="number" id="capacityInput" min="10" max="40" step="1" value="${s.capacity}"></div></div><p class="help">${esc(t('nextSession'))}</p>
  <label class="check"><input type="checkbox" id="motionInput" ${s.reducedMotion?'checked':''}><span>${esc(t('motion'))}</span></label><div class="button-row">${btn('fullscreen',document.fullscreenElement||document.body.classList.contains('focus-mode')?'exitFull':'full','quiet')}</div>
  <div class="settings-links">${btn('guideSettings','guide')}</div><p class="status-line error" id="settingsStorage" hidden></p><p class="privacy">${esc(t('privacy'))}</p>`;
@@ -183,6 +185,7 @@ document.addEventListener('change',event=>{
  if(el.id==='motionInput'){data.settings.reducedMotion=el.checked;save();}
 });
 document.addEventListener('input',event=>{
+ if(event.target.id==='arrivalRateInput'){const el=event.target,rate=normalizeArrivalRate(Number(el.value));data.settings.arrivalRate=rate;if(session)session.arrivalRate=rate;el.value=rate;el.setAttribute('aria-valuetext',rate+'×');text('arrivalRateValue',rate+'×');text('arrivalRateHelp',arrivalHelp(rate));save();}
  if(event.target.id==='thresholdInput'){const threshold=Number(event.target.value);currentClass().calibration={threshold,baseline:currentClass().calibration?.baseline??null};if(session)session.threshold=threshold;save();}
 });
 $('modal').addEventListener('cancel',event=>{event.preventDefault();closeCurrent();});

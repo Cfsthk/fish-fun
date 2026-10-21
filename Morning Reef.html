@@ -4,6 +4,7 @@
  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#062f48">
  <title>魚樂無窮</title><link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMwODJiNDAiLz48cGF0aCBkPSJNOCAyNWg4di01aDI1djVoOXYxN2gtOXY1SDE2di01SDh6IiBmaWxsPSIjZjViNzdiIi8+PHBhdGggZD0iTTIyIDIwaDd2MjdoLTd6bTE1IDBoNnYyN2gtNnoiIGZpbGw9IiNmZmYyZDkiLz48cGF0aCBkPSJNNDUgMjdoNXY1aC01eiIgZmlsbD0iIzA4MmI0MCIvPjwvc3ZnPgo=" type="image/svg+xml"><style>
 :root{color-scheme:dark;--ink:#e5f2ed;--muted:#94b1bd;--accent:#f2c18f;--line:#ffffff14;font:14px/1.6 'Avenir Next','Segoe UI',system-ui,-apple-system,sans-serif;background:#086e93;color:var(--ink)}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{height:100dvh}button,input,select{font:inherit}button{cursor:pointer;color:inherit;border:0}button:disabled{opacity:.4;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}button,a{touch-action:manipulation}[hidden]{display:none!important}#aquarium,#reefCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}#reefCanvas{image-rendering:pixelated;background:#086e93}.ocean-controls{position:fixed;top:22px;right:24px;display:flex;gap:10px;z-index:2}.ocean-controls button{position:relative;width:44px;height:44px;display:grid;place-items:center;background:#042b4075;border:1px solid #dcf6f62b;border-radius:50%;backdrop-filter:blur(5px);color:#e6f8f3;box-shadow:0 3px 14px #00304d18;transition:background .15s}.ocean-controls button:hover{background:#062c46b8}.ocean-controls svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linejoin:round;stroke-linecap:round}.ocean-controls #pauseButton svg{stroke-width:2.3}.coin-counter{display:flex;align-items:center;justify-content:center;gap:8px;min-width:76px;height:44px;padding:0 14px 0 11px;border:1px solid #f3d19638;border-radius:24px;background:#042b4099;backdrop-filter:blur(5px);color:#ffe0a0;font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;box-shadow:0 3px 14px #00304d18}.ocean-controls .coin-counter svg{width:24px;height:24px;flex-shrink:0;stroke:none;shape-rendering:crispEdges}.coin-counter span{min-width:1.7em;text-align:right}.ocean-controls i{display:none;position:absolute;right:0;top:0;width:7px;height:7px;border-radius:50%;background:#f2c18f;box-shadow:0 0 0 2px #16485b}#settingsButton[data-attention=true] i{display:block}dialog{width:min(470px,calc(100vw - 30px));max-height:calc(100dvh - 36px);padding:0;border:1px solid #d7f2eb24;border-radius:12px;background:#082b3ff5;color:var(--ink);box-shadow:0 24px 100px #001a3499;overflow:auto}dialog.wide{width:min(900px,calc(100vw - 30px))}dialog.pause-window{width:min(350px,calc(100vw - 38px));text-align:center}dialog::backdrop{background:#001c3268;backdrop-filter:blur(4px)}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 27px 0}.modal-head h1{font-size:23px;font-weight:500;letter-spacing:.02em;line-height:1.4;margin:0}.modal-close{flex-shrink:0;background:#ffffff08;border:1px solid #ffffff15;color:#aac4cd;border-radius:50%;width:32px;height:32px;font-size:22px;display:grid;place-items:center;line-height:1}.modal-close:hover{background:#ffffff14;color:var(--ink)}.modal-body{padding:19px 27px 27px}.pause-window .modal-head{justify-content:center;padding-top:31px}.pause-window .modal-head h1{font-size:25px;font-weight:400}.pause-buttons{display:flex;flex-direction:column;gap:12px;margin-top:8px}.primary,.secondary,.quiet{min-height:42px;padding:10px 18px;border-radius:5px;font-size:12px;font-weight:500;line-height:1.5;background:transparent;display:inline-flex;align-items:center;justify-content:center;gap:8px}.primary{color:#183b4b;background:var(--accent)}.primary:hover{background:#f9d0a9}.secondary{background:#164356;border:1px solid #ffffff12;color:#d4e8e8}.secondary:hover{background:#1c4d60}.quiet{color:#a4c1cc}.quiet:hover{color:var(--accent);background:#ffffff03}.pause-buttons .primary,.pause-buttons .secondary,.pause-buttons .quiet{width:100%;min-height:46px;font-size:14px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field label{display:block;font-size:11px;color:#9dbdc7;margin-bottom:8px}.field select,.field input[type=number]{width:100%;background:#052437;border:1px solid #345464;border-radius:5px;padding:9px 10px;color:#e3efeb;min-height:41px;max-width:100%;font-size:12px}.settings-block{padding-top:19px;margin-top:19px;border-top:1px solid var(--line)}.settings-block h2{font-size:12px;font-weight:500;margin:0 0 12px}.field-label{display:block;font-size:12px;color:#d6e8e8;margin:17px 0 10px}input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}.range-ends{display:flex;justify-content:space-between;font-size:9px;color:#7fa3b4;margin-top:3px}.help,.status-line{font-size:10px;color:#8eafbc;line-height:1.8;margin:10px 0 0}.status-line.error{color:#edbd98}.status-line.success{color:#99d5bc}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px}.setting-row>span{font-size:12px}.connection{display:flex;align-items:center;gap:7px;font-size:10px;color:#9ebfc8}.connection i{width:5px;height:5px;border-radius:50%;background:#87c4b4}.connection.error i{background:#f1bc88}.connection.error{color:#edbd98}.button-row{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:15px}.button-row button{font-size:11px;min-height:36px;padding:8px 13px}.check{display:flex;gap:10px;align-items:center;font-size:11px;cursor:pointer;margin:16px 0 0}.check input{width:16px;height:16px;accent-color:var(--accent);margin:0}.settings-links{display:flex;gap:9px;margin-top:19px;padding-top:18px;border-top:1px solid var(--line)}.settings-links button{flex:1}.modal-footer{display:flex;gap:10px;justify-content:flex-end;align-items:center;margin-top:25px;flex-wrap:wrap}.privacy{font-size:9px;color:#6f95a7;line-height:1.8;margin:20px 0 0}.calibration-progress{height:3px;background:#19475a;margin:13px 0 7px}.calibration-progress div{width:0;height:100%;background:var(--accent)}.report-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;padding:5px 0 22px;margin-bottom:7px;border-bottom:1px solid var(--line)}.report-summary strong{display:block;font-weight:300;font-size:30px;line-height:1.4}.report-coins strong{color:#ffe0a0}.report-summary small{display:block;font-size:10px;color:#8babb8;margin-top:4px}.visitors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:0 20px}.visitor{display:flex;align-items:center;gap:11px;padding:15px 0;border-bottom:1px solid var(--line)}.visitor canvas{width:66px;height:66px;image-rendering:pixelated;flex-shrink:0}.visitor strong{display:block;font-size:11px;font-weight:500}.visitor small{font-size:9px;color:#89aab7;display:block;margin-top:5px}.visitor em{display:block;color:var(--accent);font-size:8px;font-style:normal;margin-top:4px}.empty{padding:40px 15px;text-align:center;color:#8fb1bf;font-size:12px}.guide-top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:16px}.guide-top p{font-size:10px;color:#9bb9c5;margin:0}.guide-top strong{font-weight:400;font-size:25px}.guide-top strong small{font-size:12px;color:#81a4b4}.filters{display:flex;gap:4px;flex-wrap:wrap;padding-bottom:15px;border-bottom:1px solid var(--line)}.filters button{background:transparent;color:#8caebd;font-size:10px;padding:6px 11px;border-radius:4px}.filters button[aria-pressed=true]{color:#f4d3ad;background:#e4b78917}.specimens{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:0 15px}.specimen{padding:17px 0 20px;border-bottom:1px solid var(--line);margin:0;text-align:center}.specimen canvas{width:105px;height:105px;display:block;margin:0 auto;image-rendering:pixelated}.specimen figcaption{font-size:10px;color:#d8e8e7;margin-top:4px}.specimen.locked figcaption{color:#6f95a7}.specimen small{display:block;font-size:8px;margin-top:5px;letter-spacing:.04em}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}body[data-loading=true] #settingsButton{opacity:.7}
+.field-label.frequency-label{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:0}.frequency-label output{color:var(--accent);font-variant-numeric:tabular-nums;font-size:13px}
 body[data-page=classes] .ocean-controls{visibility:hidden}.class-picker{width:min(520px,calc(100vw - 30px))}.class-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.class-choice{display:flex;align-items:center;justify-content:center;gap:9px;min-height:58px;padding:10px 7px;border:1px solid #ffffff1c;border-radius:6px;background:#124052;transition:background .15s,border-color .15s}.class-choice span{font-size:11px;color:#9fc1ce}.class-choice strong{font-size:19px;font-weight:500}.class-choice:hover{background:#1b5263;border-color:#f2c18f88}.other-classes{margin-top:20px;padding-top:15px;border-top:1px solid var(--line)}.other-classes h2{font-size:12px;color:var(--muted);font-weight:400;margin:0 0 12px}
 .grade-choices{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.grade-choice{min-height:55px;padding:8px 4px;border-radius:5px;border:1px solid #ffffff1c;background:#124052;font-size:21px;transition:background .15s,border-color .15s}.grade-choice:hover{background:#1b5263}.grade-choice[aria-pressed=true]{color:#183b4b;background:var(--accent);border-color:var(--accent)}.house-choices{margin-top:24px}.house-choices .class-choice{min-height:76px}.house-choices .class-choice strong{font-size:26px}
 @media(max-width:600px){.ocean-controls{top:15px;right:16px;gap:9px}.ocean-controls button{width:42px;height:42px}.modal-head{padding:22px 22px 0}.modal-head h1{font-size:21px}.modal-body{padding:17px 22px 23px}.report-summary{gap:10px}.coin-counter{height:42px;min-width:74px;padding-right:12px;font-size:16px}.report-summary strong{font-size:25px}.visitors-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.visitor{gap:8px}.visitor canvas{width:48px;height:48px}.visitor strong{font-size:10px}.visitor small{font-size:8px}.specimens{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 9px}.specimen canvas{width:86px;height:86px}.specimen figcaption{font-size:9px}.filters button{font-size:9px;padding:6px 8px}.settings-grid{gap:15px}.modal-footer{gap:8px}.modal-footer .primary,.modal-footer .secondary{font-size:11px;padding:10px 14px}.class-choices{gap:7px}.class-choice{gap:6px;min-height:53px}.class-choice span{font-size:10px}.class-choice strong{font-size:18px}}
@@ -202,11 +203,12 @@ function advanceSwimmer(c,dt,{width=960,height=540,panic=0,rng=Math.random,halfW
 
 const COIN_CAP = 150;
 const COIN_WEIGHTS = [1, 1.4, 2, 3, 4];
+const normalizeArrivalRate = value => Math.round(Math.max(1, Math.min(3, Number.isFinite(value) ? value : 1)) * 10) / 10;
 // Coins per second: more residents and rarer species help, with diminishing returns.
 // Balanced for a 30-minute session; the teacher still decides when to end.
 function coinRate(residents) {
   const power = residents.reduce((sum, r) => sum + COIN_WEIGHTS[BY_ID[r.speciesId].tier], 0);
-  return 3.6 * (1 - Math.exp(-power / 5)) / 60;
+  return 3.4 * (1 - Math.exp(-power / 4.5)) / 60;
 }
 
 function pickSpecies(rng = Math.random) {
@@ -225,8 +227,9 @@ function capacityVictim(residents, incoming) {
 }
 
 class ReefSession {
-  constructor({ capacity = 20, threshold = 65, known = [], demo = false, rng = Math.random } = {}) {
+  constructor({ capacity = 20, threshold = 65, arrivalRate = 1, known = [], demo = false, rng = Math.random } = {}) {
     this.capacity = capacity; this.threshold = threshold; this.demo = demo; this.rng = rng;
+    this.arrivalRate = normalizeArrivalRate(arrivalRate);
     this.status = 'running'; this.water = 'calm'; this.elapsed = 0; this.quietSeconds = 0; this.coins = 0;
     this.quietProgress = 0; this.interval = this.nextInterval(); this.overFor = 0; this.calmFor = 0;
     this.lossIn = 0; this.incidents = 0; this.residents = []; this.visits = new Map(); this.known = new Set(known);
@@ -298,7 +301,7 @@ class ReefSession {
           this.calmFor += dt;
           if (this.calmFor >= 10 - 1e-7) { this.calmFor = 10; this.water = 'calm'; this.emit('water', { state: 'calm' }); }
         } else if (this.water === 'calm') {
-          this.quietSeconds += dt; this.quietProgress += dt;
+          this.quietSeconds += dt; this.quietProgress += dt * this.arrivalRate;
           if (this.quietProgress >= this.interval - 1e-7) { this.quietProgress -= this.interval; this.admit(pickSpecies(this.rng)); this.interval = this.nextInterval(); }
         }
       }
@@ -318,7 +321,7 @@ class ReefSession {
 const KEY = 'morning-reef-v2';
 const OLD_KEY = 'morning-reef-v1';
 const HOUSES = [{key:'f',zh:'信',en:'F'},{key:'h',zh:'望',en:'H'},{key:'l',zh:'愛',en:'L'},{key:'w',zh:'智',en:'W'}];
-const DEFAULT_SETTINGS = {capacity:20,margin:8,threshold:65,reducedMotion:false};
+const DEFAULT_SETTINGS = {capacity:20,margin:8,threshold:65,arrivalRate:1,reducedMotion:false};
 const newClass = (name='Class A') => ({id:crypto.randomUUID(),name,unlocked:[],sessions:[],calibration:null});
 function presetClasses() {
   return Array.from({length:6},(_,i)=>HOUSES.map(h=>({id:'p'+(i+1)+'-'+h.key,name:'P.'+(i+1)+' '+h.zh,grade:i+1,house:h.key,unlocked:[],sessions:[],calibration:null}))).flat();
@@ -370,7 +373,7 @@ function validateStore(input) {
     }else{classes.push(c);if(c.id===input.activeId)activeId=c.id;}
   }
   const s=input.settings||{};
-  return {version:2,lang:input.version===1?'zh':input.lang==='en'?'en':'zh',classes,activeId,settings:{capacity:finite(s.capacity,10,40)?Math.round(s.capacity):20,margin:finite(s.margin,2,20)?Math.round(s.margin):8,threshold:finite(s.threshold,5,98)?Math.round(s.threshold):65,reducedMotion:s.reducedMotion===true}};
+  return {version:2,lang:input.version===1?'zh':input.lang==='en'?'en':'zh',classes,activeId,settings:{capacity:finite(s.capacity,10,40)?Math.round(s.capacity):20,margin:finite(s.margin,2,20)?Math.round(s.margin):8,threshold:finite(s.threshold,5,98)?Math.round(s.threshold):65,arrivalRate:normalizeArrivalRate(s.arrivalRate),reducedMotion:s.reducedMotion===true}};
 }
 function readStore() {
   try{const raw=localStorage.getItem(KEY)??localStorage.getItem(OLD_KEY);return {data:raw?validateStore(JSON.parse(raw)):freshStore(),error:null};}
@@ -441,6 +444,7 @@ const COPY={
  zh:{
   settings:'設定',pause:'暫停',paused:'已暫停',resume:'繼續',restart:'重新開始',end:'結束本節',close:'關閉',back:'返回',
   class:'班別',chooseClass:'選擇班別',grade:'年級',chooseGrade:'選擇年級',language:'語言',chinese:'繁體中文',english:'English',capacity:'生物上限',nextSession:'生物上限於下一節生效。',
+  arrivalRate:'生物出現頻率',arrivalHelp:'水面平靜後，約每 {min}–{max} 秒安靜迎來一位訪客。調整即時生效。',
   threshold:'容許音量',stricter:'較安靜',looser:'較寬鬆',calibrate:'校準讀書聲',calibrating:'正在校準',calibrationHelp:'請用理想的音量朗讀，12 秒後會自動完成校準。',calibrated:'校準完成',noAudio:'未能收到聲音，請檢查咪高峰後重試。',
   microphone:'咪高峰',connected:'已連接',connecting:'正在連接',micDenied:'請在瀏覽器允許使用咪高峰。',micMissing:'未能找到咪高峰。',micError:'咪高峰未能連接，請檢查瀏覽器和裝置設定。',micUnsupported:'此瀏覽器未能使用咪高峰。請使用 Chrome 或 Edge，或以 HTTPS／localhost 開啟。',retry:'重新連接',
   privacy:'聲音只在這部電腦分析，不會錄音或上傳。',motion:'減少背景動畫',full:'全螢幕',exitFull:'離開全螢幕',guide:'圖鑑',
@@ -451,6 +455,7 @@ const COPY={
  en:{
   settings:'Settings',pause:'Pause',paused:'Paused',resume:'Resume',restart:'Restart',end:'End session',close:'Close',back:'Back',
   class:'Class',chooseClass:'Choose your class',grade:'Year group',chooseGrade:'Choose a year group',language:'Language',chinese:'繁體中文',english:'English',capacity:'Resident limit',nextSession:'Capacity applies to the next session.',
+  arrivalRate:'Creature arrival frequency',arrivalHelp:'Once the water is calm, a visitor arrives after about {min}–{max} quiet seconds. Changes apply immediately.',
   threshold:'Allowed volume',stricter:'Quieter',looser:'More tolerant',calibrate:'Calibrate reading',calibrating:'Calibrating',calibrationHelp:'Read aloud at the desired volume. Calibration finishes automatically after 12 seconds.',calibrated:'Calibration complete',noAudio:'No sound received. Check the microphone and try again.',
   microphone:'Microphone',connected:'Connected',connecting:'Connecting',micDenied:'Allow microphone access in your browser.',micMissing:'No microphone was found.',micError:'Could not connect the microphone. Check the browser and device settings.',micUnsupported:'Microphone access is unavailable. Use Chrome or Edge, or open on HTTPS / localhost.',retry:'Reconnect',
   privacy:'Sound is analysed on this computer. Audio is never recorded or uploaded.',motion:'Reduce background motion',full:'Full screen',exitFull:'Exit full screen',guide:'Field guide',
@@ -646,6 +651,7 @@ const currentClass=()=>data.classes.find(c=>c.id===data.activeId)||data.classes[
 const name=s=>s[data.lang];
 const label=c=>classLabel(c,data.lang);
 const tier=i=>TIERS[i][data.lang];
+const arrivalHelp=rate=>t('arrivalHelp').replace('{min}',Math.round(45/rate*10)/10).replace('{max}',Math.round(60/rate*10)/10);
 const text=(id,value)=>{const el=$(id);if(el&&el.textContent!==String(value))el.textContent=String(value);};
 const btn=(action,key,kind='secondary',attrs='')=>`<button type="button" class="${kind}" data-action="${action}" ${attrs}>${esc(t(key))}</button>`;
 const scene=new ReefScene($('reefCanvas')),mic=new ClassroomMicrophone();
@@ -670,7 +676,7 @@ function updateStatus(){
  scene.reducedMotion=data.settings.reducedMotion||matchMedia('(prefers-reduced-motion: reduce)').matches;
  scene.state(session,level);
 }
-function makeSession(){sessionClassId=currentClass().id;session=new ReefSession({capacity:data.settings.capacity,threshold:currentClass().calibration?.threshold??data.settings.threshold,known:currentClass().unlocked});session.pause();scene.clear();events(session.drain());scene.draw(0,true);updateStatus();}
+function makeSession(){sessionClassId=currentClass().id;session=new ReefSession({capacity:data.settings.capacity,threshold:currentClass().calibration?.threshold??data.settings.threshold,arrivalRate:data.settings.arrivalRate,known:currentClass().unlocked});session.pause();scene.clear();events(session.drain());scene.draw(0,true);updateStatus();}
 function freeze(){session?.pause();mic.pause();scene.freeze(true);level=0;updateStatus();}
 async function connect(){
  if(mic.stream&&!mic.lost)return;
@@ -724,6 +730,7 @@ function renderSettings(message=''){
  <div class="settings-block"><div class="setting-row"><span>${esc(t('microphone'))}</span><span class="connection ${micIssue?'error':''}"><i></i><span id="microphoneState"></span></span></div><p class="status-line error" id="microphoneDetail" hidden></p>
  <label class="field-label" for="thresholdInput">${esc(t('threshold'))}</label><input id="thresholdInput" type="range" min="5" max="98" step="1" value="${threshold}"><div class="range-ends"><span>${esc(t('stricter'))}</span><span>${esc(t('looser'))}</span></div>
  <div class="button-row">${btn('calibrate','calibrate','secondary',calibration?'disabled':'')}${btn('retry','retry','quiet')}</div><p class="help">${esc(t('calibrationHelp'))}</p><div class="calibration-progress" id="calibrationProgress" ${calibration?'':'hidden'}><div id="calibrationFill"></div></div><p id="calibrationStatus" class="status-line ${message?'success':''}">${esc(message)}</p></div>
+ <div class="settings-block"><label class="field-label frequency-label" for="arrivalRateInput">${esc(t('arrivalRate'))}<output id="arrivalRateValue" for="arrivalRateInput">${s.arrivalRate}×</output></label><input id="arrivalRateInput" type="range" min="1" max="3" step="0.1" value="${s.arrivalRate}" aria-valuetext="${s.arrivalRate}×" aria-describedby="arrivalRateHelp"><div class="range-ends"><span>1×</span><span>3×</span></div><p class="help" id="arrivalRateHelp">${esc(arrivalHelp(s.arrivalRate))}</p></div>
  <div class="settings-block"><div class="field"><label for="capacityInput">${esc(t('capacity'))}</label><input type="number" id="capacityInput" min="10" max="40" step="1" value="${s.capacity}"></div></div><p class="help">${esc(t('nextSession'))}</p>
  <label class="check"><input type="checkbox" id="motionInput" ${s.reducedMotion?'checked':''}><span>${esc(t('motion'))}</span></label><div class="button-row">${btn('fullscreen',document.fullscreenElement||document.body.classList.contains('focus-mode')?'exitFull':'full','quiet')}</div>
  <div class="settings-links">${btn('guideSettings','guide')}</div><p class="status-line error" id="settingsStorage" hidden></p><p class="privacy">${esc(t('privacy'))}</p>`;
@@ -817,6 +824,7 @@ document.addEventListener('change',event=>{
  if(el.id==='motionInput'){data.settings.reducedMotion=el.checked;save();}
 });
 document.addEventListener('input',event=>{
+ if(event.target.id==='arrivalRateInput'){const el=event.target,rate=normalizeArrivalRate(Number(el.value));data.settings.arrivalRate=rate;if(session)session.arrivalRate=rate;el.value=rate;el.setAttribute('aria-valuetext',rate+'×');text('arrivalRateValue',rate+'×');text('arrivalRateHelp',arrivalHelp(rate));save();}
  if(event.target.id==='thresholdInput'){const threshold=Number(event.target.value);currentClass().calibration={threshold,baseline:currentClass().calibration?.baseline??null};if(session)session.threshold=threshold;save();}
 });
 $('modal').addEventListener('cancel',event=>{event.preventDefault();closeCurrent();});

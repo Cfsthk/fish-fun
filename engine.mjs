@@ -2,11 +2,12 @@ import { SPECIES, BY_ID, TIERS } from './species.mjs';
 
 export const COIN_CAP = 150;
 const COIN_WEIGHTS = [1, 1.4, 2, 3, 4];
+export const normalizeArrivalRate = value => Math.round(Math.max(1, Math.min(3, Number.isFinite(value) ? value : 1)) * 10) / 10;
 // Coins per second: more residents and rarer species help, with diminishing returns.
 // Balanced for a 30-minute session; the teacher still decides when to end.
 export function coinRate(residents) {
   const power = residents.reduce((sum, r) => sum + COIN_WEIGHTS[BY_ID[r.speciesId].tier], 0);
-  return 3.6 * (1 - Math.exp(-power / 5)) / 60;
+  return 3.4 * (1 - Math.exp(-power / 4.5)) / 60;
 }
 
 export function pickSpecies(rng = Math.random) {
@@ -25,8 +26,9 @@ export function capacityVictim(residents, incoming) {
 }
 
 export class ReefSession {
-  constructor({ capacity = 20, threshold = 65, known = [], demo = false, rng = Math.random } = {}) {
+  constructor({ capacity = 20, threshold = 65, arrivalRate = 1, known = [], demo = false, rng = Math.random } = {}) {
     this.capacity = capacity; this.threshold = threshold; this.demo = demo; this.rng = rng;
+    this.arrivalRate = normalizeArrivalRate(arrivalRate);
     this.status = 'running'; this.water = 'calm'; this.elapsed = 0; this.quietSeconds = 0; this.coins = 0;
     this.quietProgress = 0; this.interval = this.nextInterval(); this.overFor = 0; this.calmFor = 0;
     this.lossIn = 0; this.incidents = 0; this.residents = []; this.visits = new Map(); this.known = new Set(known);
@@ -98,7 +100,7 @@ export class ReefSession {
           this.calmFor += dt;
           if (this.calmFor >= 10 - 1e-7) { this.calmFor = 10; this.water = 'calm'; this.emit('water', { state: 'calm' }); }
         } else if (this.water === 'calm') {
-          this.quietSeconds += dt; this.quietProgress += dt;
+          this.quietSeconds += dt; this.quietProgress += dt * this.arrivalRate;
           if (this.quietProgress >= this.interval - 1e-7) { this.quietProgress -= this.interval; this.admit(pickSpecies(this.rng)); this.interval = this.nextInterval(); }
         }
       }

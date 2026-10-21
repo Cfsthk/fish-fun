@@ -13,6 +13,46 @@ test('arrivals earn 45–60 seconds of settled reading and duplicate visitors co
   s.tick(45, 20); assert.equal(s.residents.length, 3); assert.equal(s.visits.get('clownfish').count, 3);
   assert.notEqual(s.residents[0].id, s.residents[1].id); assert.deepEqual(s.discoveries, ['clownfish']);
 });
+test('1–3× arrival frequency shortens the quiet wait without accelerating the session clock', () => {
+  for (const arrivalRate of [1, 1.5, 2, 2.5, 3]) {
+    const s = session({ arrivalRate }); s.drain(); const wait = 45 / arrivalRate;
+    assert.equal(s.tick(wait - .1, 20).filter(e => e.type === 'arrival').length, 0);
+    assert.equal(s.tick(.1, 20).filter(e => e.type === 'arrival').length, 1);
+    assert.equal(s.residents.length, 2);
+    assert.ok(Math.abs(s.elapsed - wait) < 1e-7); assert.ok(Math.abs(s.quietSeconds - wait) < 1e-7);
+  }
+});
+test('changing frequency preserves earned quiet progress, and paused time earns no extra visitors', () => {
+  const faster = session(); faster.drain(); faster.tick(30, 20); const progress = faster.quietProgress; faster.pause(); faster.arrivalRate = 3;
+  faster.tick(100, 20); assert.equal(faster.quietProgress, progress); assert.equal(faster.residents.length, 1);
+  faster.resume(); assert.equal(faster.tick(4.9, 20).filter(e => e.type === 'arrival').length, 0);
+  assert.equal(faster.tick(.1, 20).filter(e => e.type === 'arrival').length, 1);
+  const slower = session({ arrivalRate: 3 }); slower.drain(); slower.tick(10, 20); slower.arrivalRate = 1;
+  assert.equal(slower.tick(14.9, 20).filter(e => e.type === 'arrival').length, 0);
+  assert.equal(slower.tick(.1, 20).filter(e => e.type === 'arrival').length, 1);
+});
+test('3× frequency keeps the one-second noise warning and ten-second recovery unchanged', () => {
+  const s = session({ arrivalRate: 3 }); s.drain(); s.tick(10, 20); stock(s);
+  assert.ok(Math.abs(s.quietProgress - 30) < 1e-7);
+  assert.equal(s.tick(.9, 100).filter(e => e.type === 'exit').length, 0);
+  assert.equal(s.tick(.1, 100).filter(e => e.type === 'exit').length, 3);
+  s.tick(9.9, 20); assert.equal(s.water, 'settling'); assert.ok(Math.abs(s.quietProgress - 30) < 1e-7);
+  s.tick(.1, 20); assert.equal(s.water, 'calm'); assert.ok(Math.abs(s.quietProgress - 30) < 1e-7);
+  assert.equal(s.tick(4.9, 20).filter(e => e.type === 'arrival').length, 0);
+  assert.equal(s.tick(.1, 20).filter(e => e.type === 'arrival').length, 1);
+});
+test('3× frequency still respects capacity, with no arrivals after ending', () => {
+  const s = session({ capacity: 2, arrivalRate: 3 }); s.drain();
+  const events = s.tick(90, 20); assert.equal(events.filter(e => e.type === 'arrival').length, 6);
+  assert.equal(s.residents.length, 2); s.end(); const total = s.visits.get('clownfish').count;
+  assert.equal(s.tick(1000, 20).filter(e => e.type === 'arrival').length, 0); assert.equal(s.visits.get('clownfish').count, total);
+});
+test('invalid frequency values cannot create a wait outside the 1–3× range', () => {
+  for (const value of [undefined, null, NaN, Infinity, '3', -10, .5, 4, 20]) {
+    const s = session({ arrivalRate: value }); assert.ok(s.arrivalRate >= 1 && s.arrivalRate <= 3);
+    assert.ok(Number.isFinite(s.arrivalRate)); s.tick(60, 20); assert.ok(s.residents.length >= 2 && s.residents.length <= 5);
+  }
+});
 test('brief loudness warns without losses and requires ten calm seconds', () => {
   const s = session(); stock(s); s.tick(20, 20);
   s.tick(.9, 90); assert.equal(s.water, 'warning'); assert.equal(s.residents.length, 12);
